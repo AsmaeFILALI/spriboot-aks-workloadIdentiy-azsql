@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: springboot-azsql-aks
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: springboot-azsql-aks
+  template:
+    metadata:
+      labels:
+        app: springboot-azsql-aks
+      annotations:
+        azure.workload.identity/use: "true" 
+    spec:
+      serviceAccountName: <service account Name>
+      containers:
+      - name: springboot-azsql-aks
+        image: <your-acr-image>
+        env:
+        - name: DATABASE_HOST
+          value: "<Azure sql server Name>.database.windows.net"
+        - name: DATABASE_NAME    
+          value: "<DB Name>" 
+        - name: MSI_CLIENTID
+          value: "<Managed identity clientId>"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: springboot-azsql-aks
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 80
+    targetPort: 8080
+  selector:
+    app: springboot-azsql-aks
