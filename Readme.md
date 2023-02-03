@@ -35,6 +35,8 @@ az aks update -g "<RG NAME>" --name "<aks cluster name>"  --enable-workload-iden
     </dependency>
 ```
 
+**Note**: The use of the latest versions of these libraries is required for the proper functioning of authentication with workload identity.
+
 ## Specify in the connection the authentication mode as ActiveDirectoryMSI and the msiClientId
 Update your connection string with **authentication=ActiveDirectoryMSI** and **msiClientId=${MSI_CLIENTID}**
 
